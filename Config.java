@@ -16,7 +16,13 @@ public class Config {
      * Nazwa aplikacji
      */
     public static String nazwaAplikacji;
+    /**
+     * Szerokosc okna aplikacji
+     */
     public static int szerokoscOkna;
+    /**
+     * Wysokosc okna aplikacji
+     */
     public static int wysokoscOkna;
     /**
      * Tekst na przycsiku Start
@@ -41,7 +47,7 @@ public class Config {
     /**
      * Nazwa okna z wpisaniem nicku
      */
-
+    public static String nazwaOknaWyboruNicku;
     /**
      * Tekst na przycisku zatwierdzenia nicku
      */
@@ -64,9 +70,12 @@ public class Config {
      * Lista najlepszych wynikow
      */
     public static String najlepszeWyniki;
+    
+    public static String przegrana;
+    public static String wygrana;
 
 
-    public static String nazwaOknaWyboruNicku;
+
 
     public static void readConstants(Properties config) {
         nazwaAplikacji=config.getProperty("nazwaAplikacji");
@@ -82,6 +91,8 @@ public class Config {
         nazwaNicku=config.getProperty("nazwaNicku");
         instrukcja=config.getProperty("instrukcja");
         najlepszeWyniki=config.getProperty("najlepszeWyniki");
+        przegrana=config.getProperty("przegrana");
+        wygrana=config.getProperty("wygrana");
 
 
     }

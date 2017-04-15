@@ -21,7 +21,7 @@ public class Bonus extends Rectangle {
 	  */
 
 	    public Bonus(int x, int y){
-	        setBounds(x+28,y+28,8,8);
+	        setBounds(x,y,64,64);
 
 	    }
 	    /**
@@ -29,11 +29,12 @@ public class Bonus extends Rectangle {
 	     * @param g kontekst graficzny
 	     */
 
-	    public void wczytajBonus(Graphics g)
-	    {
-	        g.setColor(Color.blue);
-	        g.fillRect(x, y, width, height);
-	    }
+	  
+ public void wczytajBonus(Graphics g){
+			
+			Ksztalt bonus=Rozgrywka.ksztalt_bonus;
+	    	g.drawImage(bonus.pobierzKsztalt(0,0),x , y, null);
+		}
 
 	}
 

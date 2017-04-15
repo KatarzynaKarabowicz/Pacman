@@ -15,9 +15,18 @@ import java.util.Scanner;
  * po wcisnieciu ANULUJ powraca sie do glownego menu gry
  */
 public class Instrukcja extends JFrame implements ActionListener {
+    /**
+     * Obszar do wyÅ›wietlania instrukcji
+     */
     private JTextArea notatnik;
-    private JButton powrót;
-
+    /**
+     * Przycisk powrotu do menu glownego
+     */
+    private JButton powrot;
+    /**
+     * ScrollPane przewijajÄ…cy okno gdy instrukcja jest za dÅ‚uga
+     */
+     private JScrollPane scrollPane;
     /**
      * konstruktor klasy opisujacej okno z instrukcja gry
      * @throws FileNotFoundException wyjatek rzucany w przypadku bledu odczytu pliku
@@ -34,12 +43,12 @@ public class Instrukcja extends JFrame implements ActionListener {
         setLayout(new BorderLayout());
         notatnik= new JTextArea();
 
-        JScrollPane scrollPane=new JScrollPane(notatnik);
+        scrollPane=new JScrollPane(notatnik);
         scrollPane.setBounds(50,50,600,600);
         add(scrollPane,BorderLayout.CENTER);
-        powrót = new JButton(Config.powrot);
-        add(powrót, BorderLayout.PAGE_END);
-        powrót.addActionListener(this);
+        powrot = new JButton(Config.powrot);
+        add(powrot, BorderLayout.PAGE_END);
+        powrot.addActionListener(this);
 
         try{
 
@@ -66,7 +75,7 @@ public class Instrukcja extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         Object source = e.getSource();
-        if(source == powrót){
+        if(source == powrot){
             new MenuGlowne();
             dispose();
         }

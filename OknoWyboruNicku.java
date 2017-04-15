@@ -12,9 +12,23 @@ import java.awt.event.ActionListener;
  * po nacisnieciu ANULUJ powraca sie do glownego Menu gry
  */
 public class OknoWyboruNicku extends JFrame implements ActionListener {
-    private JButton OK, anuluj;
+    /**
+     * Przycisk zatwierdzenia nicku i przejscia do glownej gry
+     */
+    private JButton OK;
+    /**
+     * Przycisk powrotu do menu glownego
+     */
+    private JButton anuluj;
+    /**
+     * Okienko do wpisania nicku
+     */
     private JTextField nazwaGracza;
-    private JPanel menuPanel;
+    //private JPanel menuPanel;
+    
+    public static JFrame okno;
+    
+    public static Rozgrywka rozgrywka;
     
     /**
      * konstruktor klasy odpowiedzialnej za tworzenie okna wyboru nicku
@@ -50,6 +64,9 @@ public class OknoWyboruNicku extends JFrame implements ActionListener {
 
 
         setSize(Config.szerokoscOkna, Config.wysokoscOkna);
+        
+         okno =new JFrame();
+         rozgrywka= new Rozgrywka();
     }
 
     @Override
@@ -57,8 +74,7 @@ public class OknoWyboruNicku extends JFrame implements ActionListener {
         Object source = e.getSource();
         if(source==OK){
            
-        	Rozgrywka rozgrywka= new Rozgrywka();
-           JFrame okno=new JFrame();
+        
           
            okno.setTitle("Pacman");
           
@@ -66,7 +82,8 @@ public class OknoWyboruNicku extends JFrame implements ActionListener {
            okno.setDefaultCloseOperation(okno.EXIT_ON_CLOSE);
           
            okno.add(rozgrywka);
-           
+           //okno.setLocationRelativeTo(null);
+           //
            okno.setResizable(true);
            okno.pack();
            okno.setVisible(true);

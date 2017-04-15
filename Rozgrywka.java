@@ -2,29 +2,59 @@ package Pacman;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
+
+
 
 /**
  * Created by pcc on 2017-03-29.
  */
-public class Rozgrywka extends Canvas implements Runnable{
-  
-	
+public class Rozgrywka extends Canvas implements Runnable, KeyListener{
+    /**
+     * Główna mapa gry
+     */
     public  static Mapa mapa;
+    /**
+     * Ksztalt, pod którym kryje się postac duszka
+     */
     public static Ksztalt ksztalt_duszek;
-    public static Ksztalt ksztalt_pacman;
+    /**
+     *ksztalt, pod którym kryje sie postać Pacmana
+     */
+    public static Ksztalt_pacman ksztalt_pacman;
+    
+    public static Ksztalt ksztalt_ciastko;
+    
+    public static Ksztalt ksztalt_bonus;
+    /**
+     *Postac glowna gry
+     */
     public static Pacman pacman;
-   
+    /**
+     * Zmienna boolowska okreslajaca czy gra trwa
+     */
     private boolean isRunning = false;
+    /**
+     * Glowny watek odpowidajacy za gre
+     */
     private Thread thread;
     
+    public static Przegrana przegrana;
+    
+    public static Wygrana wygrana;
     
     public Rozgrywka(){
        
 
-        mapa = new Mapa("mapa1.txt");
+    	addKeyListener(this);
+    	
+        mapa = new Mapa("mapa2.txt");
         ksztalt_duszek = new Ksztalt("duszek.png");
-        ksztalt_pacman=new Ksztalt("pacman64.png");
+        pacman=new Pacman(mapa.rozmiarMapy*32, mapa.rozmiarMapy*32);
+        ksztalt_pacman=new Ksztalt_pacman("pacman50.png");
+        ksztalt_ciastko=new Ksztalt("ciastko.png");
+        ksztalt_bonus=new Ksztalt("bonus.png");
         
         Dimension dimension =new Dimension(mapa.rozmiarMapy*64, mapa.rozmiarMapy*64);
         setPreferredSize(dimension);
@@ -39,16 +69,34 @@ public class Rozgrywka extends Canvas implements Runnable{
         isRunning = true;
         thread = new Thread(this);
         thread.start();
+        
     }
 
     public synchronized void stop(){
         if (!isRunning) return;
         isRunning = false;
+        
         try {
+            
+            if(Pacman.czy_wygrana){
+            wygrana= new Wygrana();
+            OknoWyboruNicku.okno.setVisible(false);
+            }
+            else{
+            	przegrana=new Przegrana();
+            	OknoWyboruNicku.okno.setVisible(false);
+            }
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        
+    }
+    
+    private void polozenie()
+    {
+    	pacman.polozenie();
+    	mapa.polozenie();
     }
     
      void wczytajRozgrywke(){
@@ -61,7 +109,7 @@ public class Rozgrywka extends Canvas implements Runnable{
         g.setColor(Color.GRAY);
         g.fillRect(0,0,mapa.rozmiarMapy*64,mapa.rozmiarMapy*64);
         mapa.wczytajMape(g);
-       //pacman.wczytajPacmana(g);
+       pacman.wczytajPacmana(g);
        
        
         g.dispose();
@@ -75,9 +123,9 @@ public class Rozgrywka extends Canvas implements Runnable{
         int fps = 0;
         double timer = System.currentTimeMillis();
         long lastTime = System.nanoTime();
-        double targetTick = 60.0;
+        double targetpolozenie = 60.0;
         double delta = 0;
-        double ns = 1000000000/targetTick;
+        double ns = 1000000000/targetpolozenie;
 
         while(isRunning){
             long now = System.nanoTime();
@@ -85,14 +133,17 @@ public class Rozgrywka extends Canvas implements Runnable{
             lastTime = now;
 
             while(delta >= 1){
-               // tick();
                 wczytajRozgrywke();
+                polozenie();
+
                 fps++;
                 delta--;
             }
 
             if(System.currentTimeMillis()-timer >= 1000){
-               // System.out.println(fps);
+                System.out.println(fps);
+                //System.out.println(mapa.rozmiarMapy);
+
                 fps = 0;
                 timer+=1000;
 
@@ -100,26 +151,31 @@ public class Rozgrywka extends Canvas implements Runnable{
         }
 
         stop();
+       
 
     }
-/*
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode()==KeyEvent.VK_RIGHT) player.right = true;
-        if(e.getKeyCode()==KeyEvent.VK_LEFT) player.left = true;
-        if(e.getKeyCode()==KeyEvent.VK_UP) player.up = true;
-        if(e.getKeyCode()==KeyEvent.VK_DOWN) player.down = true;
-    }
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode()==KeyEvent.VK_RIGHT) player.right = false;
-        if(e.getKeyCode()==KeyEvent.VK_LEFT) player.left = false;
-        if(e.getKeyCode()==KeyEvent.VK_UP) player.up = false;
-        if(e.getKeyCode()==KeyEvent.VK_DOWN) player.down = false;
 
-    }
-    @Override
-    public void keyTyped(KeyEvent e) {}
+    
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		if(e.getKeyCode()==KeyEvent.VK_RIGHT) pacman.prawo = true;
+        if(e.getKeyCode()==KeyEvent.VK_LEFT) pacman.lewo = true;
+        if(e.getKeyCode()==KeyEvent.VK_UP) pacman.gora = true;
+        if(e.getKeyCode()==KeyEvent.VK_DOWN) pacman.dol = true;
+	
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+		if(e.getKeyCode()==KeyEvent.VK_RIGHT) pacman.prawo = false;
+        if(e.getKeyCode()==KeyEvent.VK_LEFT) pacman.lewo = false;
+        if(e.getKeyCode()==KeyEvent.VK_UP) pacman.gora = false;
+        if(e.getKeyCode()==KeyEvent.VK_DOWN) pacman.dol = false;
+	}
+	
 
-*/
 }
+

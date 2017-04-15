@@ -20,7 +20,7 @@ public class Ciastko extends Rectangle {
  * @param y wspolrzedna na osi oy
  */
 	    public Ciastko(int x, int y){
-	        setBounds(x+28,y+28,8,8);
+	        setBounds(x,y,64,64);
 
 	    }
 	    
@@ -29,11 +29,12 @@ public class Ciastko extends Rectangle {
 	     * @param g kontekst graficzny
 	     */
 
-	    public void wczytajCiastko(Graphics g)
-	    {
-	        g.setColor(Color.yellow);
-	        g.fillRect(x, y, width, height);
-	    }
+	    public void wczytajCiastko(Graphics g){
+			
+			Ksztalt ciastko=Rozgrywka.ksztalt_ciastko;
+	    	g.drawImage(ciastko.pobierzKsztalt(0,0),x , y, null);
+		}
+
 
 	}
 

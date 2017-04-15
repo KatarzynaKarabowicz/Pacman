@@ -11,7 +11,8 @@ public class Main {
     public static void main(String[] args) {
 
         String configPath = "config.properties";
-
+        
+        
         ReadConfig readConfig = new ReadConfig();
         final Properties config;
 

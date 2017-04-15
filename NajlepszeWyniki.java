@@ -9,17 +9,22 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- * klasa reprezentujaca okno wyswietlajace najlepsze wyniki 
- * po nacisnieciu ANULUJ powraca sie do glownego menu gry
+ * klasa reprezentujaca okno wysiwetlajace najlepsze wyniki 
  */
 public class NajlepszeWyniki extends JFrame implements ActionListener {
-    private JTextArea notatnik;
-    private JButton powrót;
-
     /**
-     * konstruktor klasy reprezentujacej okno najlepszych wynikow
-     * @throws FileNotFoundException wyjatek rzucany w momencie bledu odczytu pliku 
+     * Obszar wyswietlajÄ…cy najlepsze wyniki
      */
+    private JTextArea notatnik;
+    /**
+     * Przycisk powrotu do menu glownego
+     */
+    private JButton powrot;
+    /**
+     * ScrollPane przewijajÄ…cy okno gdy lista najlepszych wynikÃ³w jest za dÅ‚uga
+     */
+    private JScrollPane scrollPane;
+
 
     public NajlepszeWyniki() throws FileNotFoundException {
         super(Config.najlepszeWyniki);
@@ -32,12 +37,12 @@ public class NajlepszeWyniki extends JFrame implements ActionListener {
         setLayout(new BorderLayout());
         notatnik= new JTextArea();
 
-        JScrollPane scrollPane=new JScrollPane(notatnik);
+        scrollPane=new JScrollPane(notatnik);
         scrollPane.setBounds(50,50,600,600);
         add(scrollPane,BorderLayout.CENTER);
-        powrót = new JButton(Config.powrot);
-        add(powrót, BorderLayout.PAGE_END);
-        powrót.addActionListener(this);
+        powrot = new JButton(Config.powrot);
+        add(powrot, BorderLayout.PAGE_END);
+        powrot.addActionListener(this);
 
         try{
 
@@ -61,14 +66,10 @@ public class NajlepszeWyniki extends JFrame implements ActionListener {
 
 
     }
-    
-    /**
-     * metoda 
-     */
     @Override
     public void actionPerformed(ActionEvent e){
         Object source = e.getSource();
-        if(source == powrót){
+        if(source == powrot){
             new MenuGlowne();
             dispose();
         }

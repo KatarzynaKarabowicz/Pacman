@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -28,15 +30,15 @@ public class Mapa {
     /**
      * tablica obiektow ciastek
      */
-    public Ciastko[][] ciastki;
+    public List<Ciastko> ciastki;
     /**
      * tablica duszkow
      */
-    public Duszek[][] duszki;
+    public List<Duszek> duszki;
     /**
      * tablica bonusow
      */
-    public Bonus[][] bonusy;
+    public List<Bonus> bonusy;
     /**
      * obiekt pacman
      */
@@ -49,6 +51,12 @@ public class Mapa {
      */
     public Mapa(String path) 
     {
+    	
+    	ciastki=new ArrayList<>();
+    	bonusy=new ArrayList<>();
+    	duszki=new ArrayList<>();
+    	
+    	
         try{
 
             File plik =  new File(path);
@@ -75,10 +83,10 @@ public class Mapa {
             
             
             plytki=new Plytka[rozmiarMapy][rozmiarMapy];
-            ciastki=new Ciastko[rozmiarMapy][rozmiarMapy];
+            /*ciastki=new Ciastko[rozmiarMapy][rozmiarMapy];
             duszki=new Duszek[rozmiarMapy][rozmiarMapy];
             bonusy=new Bonus[rozmiarMapy][rozmiarMapy];
-            pacman=new Pacman(rozmiarMapy,rozmiarMapy);
+            pacman=new Pacman(rozmiarMapy,rozmiarMapy);*/
 
             int y=0;
 
@@ -98,13 +106,13 @@ public class Mapa {
                     }
                     
                     else if (linijka.charAt(x)=='D')
-                    	duszki[x][y]=new Duszek(x*64,y*64);
+                    	duszki.add(new Duszek(x*64,y*64));
                     
                     else if (linijka.charAt(x)=='B')
-                    	bonusy[x][y]=new Bonus(x*64,y*64);
+                    	bonusy.add(new Bonus(x*64,y*64));
                     
                     else 
-                    	ciastki[x][y]=new Ciastko(x*64,y*64);
+                    	ciastki.add(new Ciastko(x*64,y*64));
                     	
                     	
                
@@ -118,6 +126,12 @@ public class Mapa {
             e.printStackTrace();
         }
     }
+    
+    public void polozenie(){
+    	for(int i=0;i<duszki.size();i++){
+    		duszki.get(i).polozenie();
+    	}
+    }
 
     /**
      * metoda odpowiedzialna za wczytanie odpowiednich komponentow mapy (plytek, duszkow, ciastek, bonusow, pacmama)
@@ -128,20 +142,19 @@ public class Mapa {
             for(int yy=0;yy<rozmiarMapy;yy++){
                 if(plytki[xx][yy]!=null)
                 plytki[xx][yy].wczytajPlytke(g);
-                
-                if(ciastki[xx][yy]!=null)
-                ciastki[xx][yy].wczytajCiastko(g);
-                
-                if(duszki[xx][yy]!=null)
-                duszki[xx][yy].wczytajDuszka(g);
-                
-                if(pacman!=null)
-                pacman.wczytajPacmana(g);
-                
-                if(bonusy[xx][yy]!=null)
-                bonusy[xx][yy].wczytajBonus(g);
             }
+    
+    
+    for(int i=0; i<ciastki.size();i++){
+    	ciastki.get(i).wczytajCiastko(g);
+    	//
+    	//
     }
-
+    for(int i=0;i<bonusy.size();i++){
+    	bonusy.get(i).wczytajBonus(g);
+    }
+    for(int i=0;i<duszki.size();i++){
+    	duszki.get(i).wczytajDuszka(g);
+    }
 }
-
+}
